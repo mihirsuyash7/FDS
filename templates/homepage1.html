@@ -1,0 +1,43 @@
+{% extends "layout1.html" %}
+
+{% block spin_home %}<span class="spinner-grow spinner-grow-sm"></span> &nbsp;{% endblock %}
+
+{% block body %}
+<div class="bgsection">
+    <div class="container">  
+        <div class="main">
+            <h1 class="rounded-4" style="color: beige; background-color: rgba(58, 58, 58, 0.8); padding: 10px;">Fraud Detection</h1>
+            {% if logged_in %}
+            <a id="dashboard_link" href="/dashboard" class="btn-main rounded-5">Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="logout_link" href="/logout" class="btn-main rounded-5">Log out</a>
+            {% else %}
+            <a id="login_link" href="/login" class="btn-main rounded-5">Log In</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="supporting">
+    <div class="container">
+        <div class="col">
+            <img src="../static/images/data-entry.png">
+            <h2>Data Entry</h2>
+            <p>Enter Transactional Data<br>to the system.</p>
+            <!-- <a href="#" class="btn-default">Learn More</a> -->
+        </div>
+        <div id="predict_tile" class="col border-dark border-opacity-50 border-start border-end">
+            <img src="../static/images/predict.png">
+            <h2>Predict</h2>
+            <p>Use modern tools to identify the fraudulent transaction.</p>
+            <!-- <a href="#" class="btn-default">Learn More</a> -->
+        </div>
+        <div class="col">
+            <img src="../static/images/report-icon.png">
+            <h2>Generate Report</h2>
+            <p>Visualize and Generate Report for the Predicted Values.</p>
+            <!-- <a href="#" class="btn-default">Learn More</a> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+{% endblock %}

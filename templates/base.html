@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block spin_home %}<span class="spinner-grow spinner-grow-sm"></span>{% endblock %}
+
+{% block body %}
+<br><br>
+<div class="container-md">
+    {% if message %}
+    <div class="row" style="margin: 50px 70px -30px;">
+        <div class="col-sm-12 alert alert-{{ alert }}" role="alert">
+            {{ message }}
+        </div>
+    </div>       
+    {% endif %}
+</div>
+<div id="test"></div>
+{% endblock %}

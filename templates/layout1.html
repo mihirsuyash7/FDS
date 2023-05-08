@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Fraud Detection - {{ title }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400, 600' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='..\static\css\homepage1.css'/>
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <div class="header" style="z-index: 1;">
+        <div class="container" style="height: auto; align-items: normal;z-index: 1;">
+            <ul class="nav">
+                <li class="nav-item ">Fraud Detection</li>
+                <li class="nav-item">
+                    <a class="menu-item" href="/" aria-label="home">{% block spin_home %}{% endblock %}Home</a>
+                </li>
+                {% if logged_in %}
+                <li class="nav-item">
+                    <a class="menu-item" href="/dashboard" aria-label="dashboard">{% block spin_dashboard %}{% endblock %}Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="menu-item" href="/account" aria-label="register">{% block spin_account %}{% endblock %}Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="menu-item" href="/logout" aria-label="register">Log Out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="menu-item" href="/login" aria-label="login">{% block spin_login %}{% endblock %}Login</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="menu-item" href="/" aria-label="about">{% block spin_about %}{% endblock %}About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% block body %}{% endblock %}
+    <div class="footer" style="width: 100%">
+        <div class="container" style="height: auto;">
+            <p>&copy; Apurva Jaiswal &nbsp;&nbsp;|&nbsp;&nbsp; Suyash Mihir</p>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    {% block js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'layout1.html' %}
+
+{% block css %}
+<style>
+    body{
+        background-color: beige;
+    }
+    .single-card-tab {
+        height: 65vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    #frgt{
+        color: #122175;
+    }
+    #frgt:link{
+        text-decoration: none;
+        margin: auto 10px;
+    }
+    #frgt:hover{
+        text-decoration: underline;
+    }
+    .phtext{
+        color: #333;
+    }
+
+    .login-card {
+        padding: 50px 100px;
+    }
+</style>
+{% endblock %}
+
+{% block spin_login %}<span class="spinner-grow spinner-grow-sm"></span>{% endblock %}
+
+{% block body %}
+<br><br>
+<div class="container-md">
+    {% if message %}
+    <div class="row" style="margin: -20px 250px -30px;">
+        <div class="col-sm-12 text-center alert alert-{{ alert }}" role="alert">
+            {{ message }}
+        </div>
+    </div>       
+    {% endif %}
+    <!-- <div class="row  row-col-2" style="margin: 50px;"> -->
+    <div class="row justify-content-md-center" style="margin: 50px;">
+        <div class="col-6">
+            <!-- <div class="card"> -->
+                <div class="bg-dark text-light rounded login-card" >
+                    <form method="POST" name="login" onsubmit="return passwordvalidate()">
+                        <div class="h3 mb-3 font-weight-normal text-center">Login</div><hr>
+                        <!-- <div class="form-group">
+                            <label for="login_email">Username</label>
+                            <input type="email" class="form-control" name="login_email" id="login_email" aria-describedby="EmailId" placeholder="Enter Username" required><!-- onblur="checkemail()" - ->
+                        </div> -->
+                        <div class="form-floating mb-2">
+                            <input type="email" class="form-control form-elem" name="login_email" id="login_email" placeholder="Transaction Amount" required>
+                            <label class="phtext" for="login_email">Email</label>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="login_password">Password</label>
+                            <input type="password" class="form-control" name="login_password" id="login_password" placeholder="Enter Password" onblur="checkpassword()" required>
+                            <span class="form-text"><a id='frgt' class="text-light" href='/forgotpassword'>Forgot Password</a></span>
+                        </div><br> -->
+                        <div class="form-floating mb-2">
+                            <!-- <label for="login_password" class="form-label">Password</label> -->
+                            <input type="password" class="form-control form-elem" name="login_password" id="login_password" placeholder="Enter Password" required>
+                            <label class="phtext" for="login_password">Password</label>
+                            <span class="form-text"><a id='frgt' class="text-light" href='/forgotpassword'>Forgot Password?</a></span>
+                        </div>
+                        <button class="btn btn-danger col-sm-6 rounded-pill">Sign In</button>
+                    </form>
+                </div>
+            <!-- </div> -->
+        </div>
+        <!-- <div class="col">
+            <div class="card">
+                <div class="card-body bg-light text-dark single-card-tab rounded" style="padding: 50px 100px;">
+                    <form class="text-center">
+                        <div id="get" class="h3 mb-3 font-weight-normal text-center">Not Registered Yet? </div><hr>
+                        <a href="/register"><button type="button" class="btn btn-success col-sm-6 text-center rounded-pill">Register Now</button></a>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+<div id="test"></div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    
+    function checkemail()
+    {
+        var regex=/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i ;
+        var mail=document.getElementById('login_email').value;
+        if(mail!="")
+        {
+            if(!regex.test(mail))
+            {
+                document.getElementById('login_email').style.border="2px solid red";
+                document.getElementById('login_email').value="";
+            }
+        }
+        document.body.focus();
+    }
+    function checkpassword()
+    {
+        var regex=/^(?=.*[0-9]).{8,}$/i ;
+        var pass=document.getElementById('login_password').value;
+        if(pass!="")
+        {
+            if(!regex.test(pass))
+            {
+                document.getElementById('login_password').style.border="2px solid red";
+                document.getElementById('login_password').value="";
+            }
+        }
+        document.body.focus();
+    }
+</script>
+{% endblock %}

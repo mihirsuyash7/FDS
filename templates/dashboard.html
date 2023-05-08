@@ -1,0 +1,914 @@
+{% extends 'layout.html' %}
+
+<!-- 
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+
+{% block css %}
+<!-- Bootstrap core CSS -->
+<link href="https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- Bootstrap CSS v5.2.1 -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> -->
+<!--Below Stylesheet link is important to diplay the datatables in the HTML file -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+    }
+
+    .scroll{
+        overflow-y: scroll;
+        height: 500px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content:center;
+      height: 100vh;
+    }
+    button:hover {
+        background-color:#4CAF50;
+        color: white;
+    }
+    #DataTables_Table_0_wrapper{
+        width: 100%;
+    }
+    .form-elem{
+        width: 90%;
+        color: #333;
+    }
+    .form-elem-2{
+        width: 60%;
+        color: #333;
+    }
+    .phtext{
+        color: #333;
+    }
+    #predict:hover{
+        background-color:#4CAF50;
+        border-color: #4CAF50;
+        color: white;
+    }
+</style>
+<!-- Custom styles for this template -->
+<!-- <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet"> -->
+<link href="./../static/css/dashboard.css" rel="stylesheet">
+{% endblock %}
+<!-- </head>
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+</nav> -->
+
+{% block spin_dashboard %}<span class="spinner-grow spinner-grow-sm"></span>{% endblock %}
+
+{% block body %}
+{% if logged_in %}
+<style>
+.navbar-brand{
+    box-shadow: none;
+}
+</style>
+<div class="container-fluid">
+    <div class="row" style="margin-top: 60px;">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="home" onclick="usersTable()">
+                            <span data-feather="home"></span>Users<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="carts" onclick="cartTable()">
+                            <span data-feather="shopping-cart"></span>Carts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="products" onclick="productTable()">
+                            <span data-feather="layers"></span>Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="ccart" onclick="ccTable()">
+                            <span data-feather="users"></span>Customers' Cart
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="bill" onclick="billingTable()">
+                            <span data-feather="bar-chart-2"></span>Billing
+                        </a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="chart"><!-- onclick="billingChart()" - ->
+                            <span data-feather="bar-chart-2"></span>Training Dataset
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="chart"><!-- onclick="billingChart()" - ->
+                            <span data-feather="bar-chart-2"></span>Training Report
+                        </a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="chart" onclick="showTable()">
+                            <span data-feather="bar-chart-2"></span>Transaction Details
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-dark bg-light" id="chart" onclick="showForm()">
+                            <span data-feather="bar-chart-2"></span>Transaction Entry
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/invoice">
+                            <span data-feather="file"></span>
+                            Integrations
+                        </a>
+                    </li> -->
+                </ul>
+                
+                <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Saved reports</span>
+                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Current month
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Last quarter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Social engagement
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Year-end sale
+                        </a>
+                    </li>
+                </ul> -->
+            </div>
+        </nav>
+        
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-dark">
+                <h1 class="h2" style="margin-top: -50px">Dashboard</h1>
+                <!-- <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        This week
+                    </button>
+                </div> -->
+            </div>
+            <!-- {% if message %}
+            <div class="row" style="margin: 50px 70px -30px;">
+                <div class="col-sm-12 alert alert-{{ alert }}" role="alert">
+                    {{ message }}
+                </div>
+            </div>       
+            {% endif %} -->
+            <!-- <div class="chart" id="bargraph">
+                <script>
+                    // var graphs = {{ plot | safe }};
+                    // Plotly.plot('bargraph',graphs,{});
+                </script>
+            </div> -->
+            <!-- Hello<br>Hello<br>Hello<br>Hello<br>Hello<br>Hello<br>
+
+            {% for id in ids %}
+                <h3>{{ id }}</h3>
+                <div id="{{ id }}"></div>
+            {% endfor %} -->
+                        
+            <!-- <h2>Section title</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,001</td>
+                            <td>Lorem</td>
+                            <td>ipsum</td>
+                            <td>dolor</td>
+                            <td>sit</td>
+                        </tr>
+                        <tr>
+                            <td>1,002</td>
+                            <td>amet</td>
+                            <td>consectetur</td>
+                            <td>adipiscing</td>
+                            <td>elit</td>
+                        </tr>
+                        <tr>
+                            <td>1,003</td>
+                            <td>Integer</td>
+                            <td>nec</td>
+                            <td>odio</td>
+                            <td>Praesent</td>
+                        </tr>
+                        <tr>
+                            <td>1,003</td>
+                            <td>libero</td>
+                            <td>Sed</td>
+                            <td>cursus</td>
+                            <td>ante</td>
+                        </tr>
+                        <tr>
+                            <td>1,004</td>
+                            <td>dapibus</td>
+                            <td>diam</td>
+                            <td>Sed</td>
+                            <td>nisi</td>
+                        </tr>
+                        <tr>
+                            <td>1,005</td>
+                            <td>Nulla</td>
+                            <td>quis</td>
+                            <td>sem</td>
+                            <td>at</td>
+                        </tr>
+                        <tr>
+                            <td>1,006</td>
+                            <td>nibh</td>
+                            <td>elementum</td>
+                            <td>imperdiet</td>
+                            <td>Duis</td>
+                        </tr>
+                        <tr>
+                            <td>1,007</td>
+                            <td>sagittis</td>
+                            <td>ipsum</td>
+                            <td>Praesent</td>
+                            <td>mauris</td>
+                        </tr>
+                        <tr>
+                            <td>1,008</td>
+                            <td>Fusce</td>
+                            <td>nec</td>
+                            <td>tellus</td>
+                            <td>sed</td>
+                        </tr>
+                        <tr>
+                            <td>1,009</td>
+                            <td>augue</td>
+                            <td>semper</td>
+                            <td>porta</td>
+                            <td>Mauris</td>
+                        </tr>
+                        <tr>
+                            <td>1,010</td>
+                            <td>massa</td>
+                            <td>Vestibulum</td>
+                            <td>lacinia</td>
+                            <td>arcu</td>
+                        </tr>
+                        <tr>
+                            <td>1,011</td>
+                            <td>eget</td>
+                            <td>nulla</td>
+                            <td>Class</td>
+                            <td>aptent</td>
+                        </tr>
+                        <tr>
+                            <td>1,012</td>
+                            <td>taciti</td>
+                            <td>sociosqu</td>
+                            <td>ad</td>
+                            <td>litora</td>
+                        </tr>
+                        <tr>
+                            <td>1,013</td>
+                            <td>torquent</td>
+                            <td>per</td>
+                            <td>conubia</td>
+                            <td>nostra</td>
+                        </tr>
+                        <tr>
+                            <td>1,014</td>
+                            <td>per</td>
+                            <td>inceptos</td>
+                            <td>himenaeos</td>
+                            <td>Curabitur</td>
+                        </tr>
+                        <tr>
+                            <td>1,015</td>
+                            <td>sodales</td>
+                            <td>ligula</td>
+                            <td>in</td>
+                            <td>libero</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+            <!-- <div id="transaction_div"  style="display: none;">
+                <div class="container">
+                    <form method="POST" enctype="multipart/form-data">
+                        <h3>Transaction Details Entry</h3><br>
+                        <label for="disp_type">Select Transaction Type : </label>
+                        <select name="trans_type" id="trans_type" name="trans_type">
+                            <option value="PAYMENT">PAYMENT</option>
+                            <option value="CASH_OUT">CASH_OUT</option>
+                            <option value="DEBIT">DEBIT</option>
+                            <option value="TRANSFER">TRANSFER</option>
+                            <option value="CASH_IN">CASH_IN</option>
+                        </select>
+                        <br><br>
+                        <label for="tans_amt">Enter Transaction Amount : </label>
+                        <input type="number" name="trans_amt" placeholder="Enter Transaction Amount" required>
+                        <br><br>
+                        <label for="tans_nameOrig">Enter Original Account Number : </label>
+                        <input type="text" name="trans_nameOrig" placeholder="Enter Original Account Number" required>
+                        <br><br>
+                        <label for="tans_oldbalanceOrg">Enter Old Balance of Original Account : </label>
+                        <input type="number" name="trans_oldbalanceOrg" placeholder="Enter Old Balance" required>
+                        <br><br>
+                        <label for="tans_newbalanceOrig">Enter New Balance of Original Account : </label>
+                        <input type="number" name="trans_newbalanceOrig" placeholder="Enter New Balance" required>
+                        <br><br>
+                        <label for="tans_nameDest">Enter Destination Account Number : </label>
+                        <input type="text" name="trans_nameDest" placeholder="Enter Destination Account Number" required>
+                        <br><br>
+                        <label for="tans_oldbalanceDest">Enter Old Balance of Destination Account : </label>
+                        <input type="number" name="trans_oldbalanceDest" placeholder="Enter Old Balance" required>
+                        <br><br>
+                        <label for="tans_newbalanceDest">Enter New Balance of Destination Account : </label>
+                        <input type="number" name="trans_newbalanceDest" placeholder="Enter New Balance" required><br><br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div> -->
+            <div id="transaction_div"  style="display: none;">
+                <div class="container" style="display: block;">
+                    <div class="row mt-5" style="background-color: #333; color: beige;">
+                        <div class="col-md-8 p-3">
+                            <form method="POST" enctype="multipart/form-data" class="ml-3">
+                                <h3>Transaction Details</h3><br>
+                                <div class="form-floating mb-2">
+                                    <select class="form-select" id="trans_type" name="trans_type" aria-label="Transaction Type" required>
+                                        <option value="PAYMENT" selected>PAYMENT</option>
+                                        <option value="CASH_OUT">CASH_OUT</option>
+                                        <option value="DEBIT">DEBIT</option>
+                                        <option value="TRANSFER">TRANSFER</option>  
+                                        <option value="CASH_IN">CASH_IN</option>
+                                    </select>
+                                    <label class="phtext" for="floatingSelect">Transaction Type</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control form-elem" name="trans_amt" id="trans_amt" placeholder="Transaction Amount" required>
+                                    <label class="phtext" for="trans_amt">Transaction Amount</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem" name="trans_nameOrig" id="trans_nameOrig" placeholder="Source Account" required>
+                                    <label class="phtext" for="trans_nameOrig">Source Account</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control form-elem" name="trans_oldbalanceOrg" id="trans_oldbalanceOrg" placeholder="Old Balance" required>
+                                    <label class="phtext" for="trans_oldbalanceOrg">Source Account Old Balance</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control form-elem" name="trans_newbalanceOrig" id="trans_newbalanceOrig" placeholder="New Balance" required>
+                                    <label class="phtext" for="trans_newbalanceOrig">Source Account New Balance</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem" name="trans_nameDest" id="trans_nameDest" placeholder="Destination Account" required>
+                                    <label class="phtext" for="trans_nameDest">Destination Account</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem" name="trans_oldbalanceDest" id="trans_oldbalanceDest" placeholder="Old Balance" required>
+                                    <label class="phtext" for="trans_oldbalanceDest">Destination Account Old Balance</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control form-elem" name="trans_newbalanceDest" id="trans_newbalanceDest" placeholder="New Balance" required>
+                                    <label class="phtext" for="trans_newbalanceDest">Destination Account New Balance</label>
+                                </div>
+                                <button id="predict" type="submit" class="btn btn-primary px-3 rounded-5" style="margin-left: 40%;">Predict</button>
+                            </form>
+                        </div>
+                        <div class="col-md-4 data-entry-image"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="transtable" style="display: none;">
+                <div class="container" style="height: auto; width: auto; overflow-x: scroll;">
+                    <div class="row" style="width: 100%; margin-top: 0;">
+                        <div class="col-md-12">
+                            {{result|safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if data %}
+            <div id="pred_display" style="display: flex;">
+                Hey
+                <div class="container" style="display: block;">
+                    <div class="row mt-5" style="background-color: #333; color: beige;">
+                        <div class="col-md-8 p-3">
+                            <form method="POST" enctype="multipart/form-data" class="ml-3">
+                                <h3>Transaction Details</h3><br>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_type" id="disp_type" placeholder="Transaction Type" value="{{ data['type'] }}">
+                                    <label class="phtext" for="disp_type">Transaction Type</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_amt" id="disp_amt" placeholder="Transaction Amount" value="{{ data['amount'] }}">
+                                    <label class="phtext" for="disp_amt">Transaction Amount</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_nameOrig" id="disp_nameOrig" placeholder="Source Account" value="{{ data['srcacc'] }}">
+                                    <label class="phtext" for="disp_nameOrig">Source Account</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_oldbalanceOrg" id="disp_oldbalanceOrg" placeholder="Old Balance" value="{{ data['srcold'] }}">
+                                    <label class="phtext" for="disp_oldbalanceOrg">Source Account Old Balance</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_newbalanceOrig" id="disp_newbalanceOrig" placeholder="New Balance" value="{{ data['srcnew'] }}">
+                                    <label class="phtext" for="disp_newbalanceOrig">Source Account New Balance</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_nameDest" id="disp_nameDest" placeholder="Destination Account" value="{{ data['destacc'] }}">
+                                    <label class="phtext" for="disp_nameDest">Destination Account</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control form-elem-2" name="disp_oldbalanceDest" id="disp_oldbalanceDest" placeholder="Old Balance" value="{{ data['destold'] }}">
+                                    <label class="phtext" for="disp_oldbalanceDest">Destination Account Old Balance</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control form-elem-2" name="disp_newbalanceDest" id="disp_newbalanceDest" placeholder="New Balance" value="{{ data['destnew'] }}">
+                                    <label class="phtext" for="disp_newbalanceDest">Destination Account New Balance</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control form-elem-2" name="disp_datetime" id="disp_datetime" placeholder="Date/Time" value="{{ data['datetime'] }}">
+                                    <label class="phtext" for="disp_datetime">Date / Time</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <span class="mx-3 h4" style="color: beige">The Transaction is : </span>
+                                    {% if data['isFraud'] == 0 %}
+                                    <button id="nf" type="submit" class="btn btn-success px-3 rounded-5" style="margin-left: 20%;" disabled>Not Fraud</button>
+                                    {% else %}
+                                    <button id="f" type="submit" class="btn btn-danger px-3 rounded-5" style="margin-left: 20%;" disabled>Fraud</button>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                        {% if data['isFraud'] == 0 %}
+                        <div class="col-md-4" style="background-image: url('../../static/images/Safe-Web-File-scaled.jpg'); background-size: contain;"></div>
+                        {% else %}
+                        <div class="col-md-4" style="background-image: url('../../static/images/stop-fraud.jpg'); background-size: contain;"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            
+            {% endif %}
+            <!-- <div id="UserTable">
+                <h3>Registered Users</h3>
+                <div class="table-responsive">
+                <table class="table table-stripped table-sm">
+                    <thead>
+                        <!-- <th>ID</th> - ->
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Admin</th>
+                        <th>Mobile</th>
+                        <th>Email Id</th>
+                        <th>Image Path</th>
+                    </thead>
+                    <tbody>
+                        {% for i in usrcrsr %}
+                        <tr>
+                            <! -- <td>{{ i["_id"] }}</td> - ->
+                            <td>{{ i["username"] }}</td>
+                            <td>{{ i["first_name"] }}</td>
+                            <td>{{ i["last_name"] }}</td>
+                            <td>{{ i["admin"] }}</td>
+                            <td>{{ i["mobile"] }}</td>
+                            <td>{{ i["email"] }}</td>
+                            <td>{{ i["image_file"] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                { % if user['admin']=='True' % }
+                <a href='/delete_user'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 50px;">Delete User</button></a>
+                { % endif % }
+                </div>
+            </div>
+            <div id="CartTable" style="display: none;">
+                <h3>Carts</h3>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-sm">
+                        <thead>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Use</th>
+                        </thead>
+                        <tbody>
+                            {% for i in crtcrsr %}
+                            <tr>
+                                <td>{{ i["_id"] }}</td>
+                                <td>{{ i["status"] }}</td>
+                                <td>{{ i["use"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    { % if user['admin']=='True' % }
+                    <a href='/add_cart'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 50px;">Add Cart</button></a>
+                    <a href='/cart_details'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">Update Cart</button></a>
+                    <a href='/delete_cart'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">Delete Cart</button></a>
+                    { % endif % }
+                </div>
+            </div>
+            <div id="ProductTable" style="display: none;">
+                <h3>Products</h3>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-sm">
+                        <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Barcode</th>
+                            <th>Category</th>
+                        </thead>
+                        <tbody>
+                            {% for i in prdcrsr %}
+                            <tr>
+                                <td>{{ i["_id"] }}</td>
+                                <td>{{ i["name"] }}</td>
+                                <td>{{ i["price"] }}</td>
+                                <td>{{ i["barcode"] }}</td>
+                                <td>{{ i["category"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    { % if user['admin']=='True' % }
+                    <a href='/add_product'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 50px;">Add Product</button></a>
+                    <a href='/product_details'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">Update Product</button></a>
+                    { % endif % }
+                </div>
+            </div>
+            <div id="CCTable" style="display: none;">
+                <h3>Customer Cart</h3>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-sm">
+                        <thead>
+                            <th>ID</th>
+                            <th>Assignment Id</th>
+                            <th>Cart Id</th>
+                            <th>Used Date</th>
+                            <th>Product Id</th>
+                            <th>Quantity</th>
+                            <th>Billing</th>
+                        </thead>
+                        <tbody>
+                            {% for i in cccrsr %}
+                            <tr>
+                                <td>{{ i["_id"] }}</td>
+                                <td>{{ i["assign_id"] }}</td>
+                                <td>{{ i["cart_id"] }}</td>
+                                <td>{{ i["used_date"] }}</td>
+                                <td>{{ i["product_id"] }}</td>
+                                <td>{{ i["quantity"] }}</td>
+                                <td>{{ i["billing"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href='/add_customer_cart'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 50px;">Add Customer Cart</button></a>
+                    { % if user['admin']=='True' % }
+                    <a href='/customer_cart_details'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">View Cart Bill</button></a>
+                    { % endif % }
+                    <a href='/view_customer_cart_by_date'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">View Cart Details</button></a>
+                </div>
+            </div>
+            <div id="BillingTable" style="display: none;">
+                <h3>Billing</h3>
+                <div class="table-responsive">
+                    <table class="table table-stripped table-sm">
+                        <thead>
+                            <th>ID</th>
+                            <th>Assignment Id</th>
+                            <th>Cart Id</th>
+                            <th>Date</th>
+                            <th>Total Items</th>
+                            <th>Total Amount</th>
+                            <th>Customer Name</th>
+                        </thead>
+                        <tbody>
+                            {% for i in bilcrsr %}
+                            <tr>
+                                <td>{{ i["_id"] }}</td>
+                                <td>{{ i["assign_id"] }}</td>
+                                <td>{{ i["cart_id"] }}</td>
+                                <td>{{ i["date"] }}</td>
+                                <td>{{ i["total_items"] }}</td>
+                                <td>{{ i["total_amount"] }}</td>
+                                <td>{{ i["cust_name"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- <a href='/add_bill'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 50px;">Add Bill</button></a> - ->
+                    <a href='/billing_details'><button type="button" class="btn btn-outline-primary" style="float: right; margin-right: 5px;">View Bill</button></a>
+                </div>
+            </div>
+            <div id="BillingChart" style="display: none;">
+                <h3>Reports</h3>
+                <h5>Timeline for store purchases</h5>
+                <canvas class="my-4 w-100" id="billchart" width="900" height="380"></canvas>
+                <h5>Timeline for store quantity usage</h5>
+                <canvas class="my-4 w-100" id="billchart2" width="900" height="380"></canvas>
+            </div> -->
+        </main>
+    </div>
+</div>
+{% else %}
+<div class="row row-col-6" style="margin: 75px 50px; background-color: rgba(65, 146, 179, 0.1);">
+    <div class="col card mx-auto d-block">
+        <div class="card-body text-center" style="padding: 50px; margin: 50px;">
+            <h3>First Log In to view contents of this page.!</h3><br>
+            <form class="text-center">
+                <a href="/login"><button type="button" class="btn btn-danger col-sm-6 text-center rounded-pill">Login Now</button></a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+<br>
+{% endblock %}
+
+{% block js %}
+<!--Below JQuery link is important to diplay the datatables in the HTML file -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<!--Below JS link is important to diplay the datatables in the HTML file -->
+<script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<!-- <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script> -->
+<script type="text/javascript">
+    // To display the Transaction Entry form
+    function showForm() {
+        var transform = document.getElementById("transaction_div");
+        var transtable = document.getElementById("transtable");
+        if (transform.style.display === "none") {
+            transtable.style.display = "none";
+            transform.style.display = "block";
+        } else {
+            transform.style.display = "none";
+        }
+    }
+    // To display the 'Transaction' Table
+    function showTable() {
+        var transform = document.getElementById("transaction_div");
+        var transtable = document.getElementById("transtable");
+        if (transtable.style.display === "none") {
+            transform.style.display = "none";
+            transtable.style.display = "block";
+        } else {
+            transtable.style.display = "none";
+        }
+    }
+    // To make the dataframe look like one in its respective position (apply the properties of dataframe added 
+    // by jquery cdn, to make it interactive)
+    $(function () {
+        $('.dataframe').DataTable();  //inspect the element of table to  get the classname
+    });
+</script>
+<!-- <script>
+(function () {
+    'use strict'
+    
+    feather.replace()
+    
+    // Graphs
+    var ctx = document.getElementById('billchart')
+    var ctx2 = document.getElementById('billchart2')
+    // eslint-disable-next-line no-unused-vars
+    var lbl = []
+    var amount = []
+    var qty = []
+    {% for item in bchart %}
+        lbl.push("{{item['date']}}")                
+        amount.push("{{item['total_amount']}}")
+        qty.push("{{item['total_items']}}")
+    {% endfor %}
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: lbl,
+            datasets: [{
+                data: amount,
+                lineTension: 0,
+                backgroundColor: '#009dff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            }
+        }
+    })
+    var qtyChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: lbl,
+            datasets: [{
+                data: qty,
+                lineTension: 0,
+                backgroundColor: '#009dff',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            }
+        }
+    })
+}())
+</script>
+<script>
+    function usersTable()
+    {
+        var x = document.getElementById("UserTable");
+        var a = document.getElementById("CartTable");
+        var b = document.getElementById("ProductTable");
+        var c = document.getElementById("CCTable");
+        var d = document.getElementById("BillingTable");
+        var e = document.getElementById("BillingChart");
+        if (x.style.display === "none") 
+        {
+            x.style.display = "block";
+            a.style.display = "none";
+            b.style.display = "none";
+            c.style.display = "none";
+            d.style.display = "none";
+            e.style.display = "none";
+        // } else {
+        //     x.style.display = "none";
+        }
+    }
+
+    function cartTable() {
+    var x = document.getElementById("CartTable");
+    var a = document.getElementById("UserTable");
+    var b = document.getElementById("ProductTable");
+    var c = document.getElementById("CCTable");
+    var d = document.getElementById("BillingTable");
+    var e = document.getElementById("BillingChart");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+        e.style.display = "none";
+    // } else {
+    //     x.style.display = "none";
+    }
+    }
+
+    function productTable() {
+    var x = document.getElementById("ProductTable");
+    var a = document.getElementById("CartTable");
+    var b = document.getElementById("UserTable");
+    var c = document.getElementById("CCTable");
+    var d = document.getElementById("BillingTable");
+    var e = document.getElementById("BillingChart");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+        e.style.display = "none";
+    // } else {
+    //     x.style.display = "none";
+    }
+    }
+
+    function ccTable() {
+    var x = document.getElementById("CCTable");
+    var a = document.getElementById("CartTable");
+    var b = document.getElementById("ProductTable");
+    var c = document.getElementById("UserTable");
+    var d = document.getElementById("BillingTable");
+    var e = document.getElementById("BillingChart");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+        e.style.display = "none";
+    // } else {
+    //     x.style.display = "none";
+    }
+    }
+
+    function billingTable() {
+    var x = document.getElementById("BillingTable");
+    var a = document.getElementById("CartTable");
+    var b = document.getElementById("ProductTable");
+    var c = document.getElementById("CCTable");
+    var d = document.getElementById("UserTable");
+    var e = document.getElementById("BillingChart");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+        e.style.display = "none";
+    // } else {
+    //     x.style.display = "none";
+    }
+    }    
+
+    function billingChart() {
+    var x = document.getElementById("BillingChart");
+    var a = document.getElementById("CartTable");
+    var b = document.getElementById("ProductTable");
+    var c = document.getElementById("CCTable");
+    var d = document.getElementById("UserTable");
+    var e = document.getElementById("BillingTable");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+        e.style.display = "none";
+    // } else {
+    //     x.style.display = "none";
+    }
+    }    
+</script> -->
+{% endblock %}

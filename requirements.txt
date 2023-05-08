@@ -1,0 +1,11 @@
+pandas
+numpy
+plotly
+seaborn
+sklearn
+imblearn
+tensorflow
+keras
+joblib
+sqlalchemy
+flask
