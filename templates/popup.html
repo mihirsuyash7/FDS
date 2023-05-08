@@ -10,23 +10,23 @@
 <body>
     <div class="page">
         <button type="submit" class="btn" onclick="openPopup()">submit</button>
-        <!-- <div class="popup" id="popupsafe">
+        <div class="popup" id="popupsafe">
             <img src="./../static/images/shield.png" alt="safe">
             <h1> Safe Transaction</h1>
             <h2> The Entered Transaction is Safe</h2>
             <h3>Click OK To Proceed!!</h3>
             <button type="button" onclick="closePopup()">OK</button>
-        </div> -->
-        <div class="popup" id="popupfraud">
+        </div>
+        <!-- <div class="popup" id="popupfraud">
             <img src="./../static/images/warning.png" alt="safe">
             <h1> Fraud Transaction!!!</h1>
             <h2> The Entered Transaction is Fraudulent</h2>
             <h3>Click OK To Proceed!!</h3>
             <button type="button" onclick="closePopup()">OK</button>
-        </div>
+        </div> -->
     </div>
 <script>
-let popup = document.getElementById("popupfraud");
+let popup = document.getElementById("popupsafe");
 
 function openPopup(){
     popup.classList.add("open-popup");
